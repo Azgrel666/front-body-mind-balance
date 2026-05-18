@@ -176,7 +176,7 @@ function Splash({ onNext }) {
   return (
     <>
       <div className="screen-body">
-        <div className="splash-logo"><img src="assets/logo.png" alt="" /></div>
+        <div className="splash-logo"><img src="/assets/logo.png" alt="" /></div>
         <span className="eyebrow">Bodymind Balance · Autoevaluación</span>
         <h1>Reconociendo<br /><em>mis pensamientos.</em></h1>
         <p>15 preguntas distribuidas en tres niveles temáticos. Al final, un semáforo te orientará sobre tu relación con tu cuerpo.</p>
@@ -373,7 +373,7 @@ function End({ answers, onRestart }) {
         </div>
       </div>
       <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <a href="Bodymind Balance.html#modulos" className="btn btn-primary">
+        <a href="/#modulos" className="btn btn-primary">
           {tier.key === "r" ? "Conocer plan Premium →" : "Explorar módulos →"}
         </a>
         <button className="btn btn-ghost" onClick={onRestart}>Repetir la autoevaluación</button>
@@ -435,7 +435,7 @@ function App() {
 
   return (
     <>
-      <a href="Bodymind Balance.html" className="exit-link">← Volver al sitio</a>
+      <a href="/" className="exit-link">← Volver al sitio</a>
       <div className={cls}>
         <ScreenChrome stageKey={stageKey} onBack={back} canGoBack={step > 0} extraLabel={extraLabel}>
           {s.type === "splash" && <Splash onNext={next} />}
