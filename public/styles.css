@@ -1230,7 +1230,7 @@ section { padding: clamp(80px, 12vh, 140px) 0; position: relative; }
     grid-template-columns: 1fr 120px;
     gap: 12px;
   }
-  .hero-title { font-size: clamp(28px, 7vw, 38px); }
+  .hero-title { font-size: clamp(36px, 7vw, 38px); }
   .hero-text { gap: 14px; }
   .hero-sub { font-size: 14px; max-width: 100%; }
   .hero-cta-row {
