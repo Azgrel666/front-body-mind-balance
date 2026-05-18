@@ -1289,3 +1289,36 @@ section { padding: clamp(80px, 12vh, 140px) 0; position: relative; }
   .pricing-strip { grid-template-columns: 1fr; text-align: center; }
   .pricing-strip .price-tag { align-items: center; margin-top: 16px; }
 }
+
+
+@media (max-width: 700px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    min-height: unset;
+    padding: 0 0 0 0;
+  }
+  .hero-text {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+  }
+  .hero-visual {
+    max-width: 220px;
+    width: 100%;
+    margin: 0 auto 0 auto;
+    aspect-ratio: 1/1.05;
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .hero-logo {
+    width: 80%;
+    max-width: 120px;
+    min-width: 60px;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+  }
+}

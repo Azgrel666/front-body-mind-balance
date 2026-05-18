@@ -28,12 +28,12 @@ const LEVELS = [
   {
     n: "02",
     tag: "Nivel 02",
-    title: "Rituales",
-    titleEm: "y evitación",
+    title: "Conductas",
+    titleEm: "automáticas",
     desc:
-      "Identifica las conductas que repites para revisar, camuflar o evitar a tu cuerpo, y cómo afectan tu día a día.",
+      "Identifica las conductas y hábitos que repites casi sin darte cuenta para revisar, camuflar o evitar a tu cuerpo.",
     context:
-      "A continuación, preguntas sobre rituales y conductas. Piensa en cómo te has comportado durante el último mes.",
+      "A continuación, preguntas sobre conductas automáticas y hábitos. Piensa en cómo te has comportado durante el último mes.",
     questions: [
       "Siento la necesidad compulsiva de mirarme a cualquier espejo que encuentre.",
       "Paso demasiado tiempo intentando arreglar o camuflar lo que no me gusta de mi físico.",
@@ -140,31 +140,86 @@ function buildScreens() {
 }
 
 // =================================================================
-// SCREEN CHROME — top bar + step dots
+// SCREEN CHROME — top bar + step dots + restart button
 // =================================================================
-function ScreenChrome({ stageKey, onBack, canGoBack, extraLabel, children }) {
+function ScreenChrome({ stageKey, onBack, canGoBack, onRestart, extraLabel, children }) {
   const stages = ["splash", "avatar", "l1", "l2", "l3", "end"];
   const labels = ["INICIO", "AVATAR", "NIVEL 01", "NIVEL 02", "NIVEL 03", "FIN"];
   const currentStage = stages.indexOf(stageKey);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleRestart = () => {
+    setShowConfirm(false);
+    onRestart();
+  };
+
+  // On first screen, back button goes to home; otherwise goes back in game
+  const handleBack = () => {
+    if (!canGoBack) {
+      window.location.href = "/";
+    } else {
+      onBack();
+    }
+  };
 
   return (
     <div className="screen-inner">
       <div className="screen-top">
-        <button className="screen-back" onClick={onBack} disabled={!canGoBack} aria-label="Atrás">←</button>
+        <div className="screen-top-left">
+          {canGoBack ? (
+            <>
+              <button className="screen-back" onClick={handleBack} aria-label="Atrás">←</button>
+              <a href="/" className="screen-home" aria-label="Volver al Home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: "16px", height: "16px" }}>
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+              </a>
+            </>
+          ) : (
+            <a href="/" className="screen-back-home" aria-label="Volver al Home">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: "16px", height: "16px" }}>
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </a>
+          )}
+        </div>
         <span className="stage-label">
           {labels[currentStage]}
           {extraLabel ? <span style={{ opacity: 0.6 }}> · {extraLabel}</span> : null}
         </span>
-        <div className="step-count">
-          {stages.map((_, i) => (
-            <span
-              key={i}
-              className={`step-dot ${i === currentStage ? "active" : ""} ${i < currentStage ? "done" : ""}`}
-            ></span>
-          ))}
+        <div className="screen-top-right">
+          <div className="step-count">
+            {stages.map((_, i) => (
+              <span
+                key={i}
+                className={`step-dot ${i === currentStage ? "active" : ""} ${i < currentStage ? "done" : ""}`}
+              ></span>
+            ))}
+          </div>
+          {stageKey !== "splash" && stageKey !== "end" && (
+            <button className="restart-btn" onClick={() => setShowConfirm(true)} aria-label="Reiniciar">
+              ↺
+            </button>
+          )}
         </div>
       </div>
       {children}
+
+      {/* Confirm restart dialog */}
+      {showConfirm && (
+        <div className="confirm-overlay" onClick={() => setShowConfirm(false)}>
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <p>¿Reiniciar la autoevaluación?</p>
+            <span className="confirm-sub">Se perderá todo el progreso actual.</span>
+            <div className="confirm-buttons">
+              <button className="btn btn-ghost" onClick={() => setShowConfirm(false)}>Cancelar</button>
+              <button className="btn btn-danger" onClick={handleRestart}>Reiniciar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -193,7 +248,7 @@ function Splash({ onNext }) {
   );
 }
 
-function Avatar({ onNext, onRestart }) {
+function Avatar({ onNext }) {
   return (
     <>
       <div className="screen-body">
@@ -221,15 +276,14 @@ function Avatar({ onNext, onRestart }) {
           ⚙ Constructor de avatar — próximamente
         </div>
       </div>
-      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div className="screen-cta">
         <button className="btn btn-primary" onClick={onNext}>Saltar y comenzar →</button>
-        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
 }
 
-function Level({ data, onNext, onRestart }) {
+function Level({ data, onNext }) {
   return (
     <>
       <div className="screen-body">
@@ -243,15 +297,14 @@ function Level({ data, onNext, onRestart }) {
           <span className="chip"><span className="dot"></span>≈ 3 min</span>
         </div>
       </div>
-      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div className="screen-cta">
         <button className="btn btn-primary" onClick={onNext}>Empezar nivel →</button>
-        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
 }
 
-function Question({ data, qIndex, globalQ, selected, onSelect, onNext, onRestart }) {
+function Question({ data, qIndex, globalQ, selected, onSelect, onNext }) {
   const isFirstOfLevel = qIndex === 0;
   return (
     <>
@@ -275,11 +328,10 @@ function Question({ data, qIndex, globalQ, selected, onSelect, onNext, onRestart
           ))}
         </div>
       </div>
-      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div className="screen-cta">
         <button className="btn btn-primary" disabled={selected === null || selected === undefined} onClick={onNext}>
           Continuar →
         </button>
-        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
@@ -287,96 +339,74 @@ function Question({ data, qIndex, globalQ, selected, onSelect, onNext, onRestart
 
 // =================================================================
 // MAZE DATA — 3 unique mazes, one per level
-// Each maze has: walls (SVG paths), validPath (array of {x,y,r} zones), start, end
+// Uses pixel-based collision detection with offscreen canvas
+// Higher levels = more difficult (more turns, narrower paths)
 // =================================================================
 const MAZES = [
-  // Level 1 — Simple serpentine
+  // Level 1 — Serpentine with 5 turns (Easy)
   {
     walls: [
-      "M0 0 L280 0 L280 280 L0 280 Z", // outer border
-      "M60 0 L60 200",
-      "M120 80 L120 280",
-      "M180 0 L180 200",
-      "M240 80 L240 280",
+      "M0 0 L280 0 L280 280 L0 280 Z", // Border
+      "M56 0 L56 168",      // Wall 1
+      "M112 112 L112 280",  // Wall 2
+      "M168 0 L168 168",    // Wall 3
+      "M224 112 L224 280",  // Wall 4
     ],
-    start: { x: 30, y: 30 },
-    end: { x: 250, y: 250 },
-    pathZones: [
-      { x: 30, y: 30, w: 30, h: 220 },
-      { x: 30, y: 220, w: 90, h: 30 },
-      { x: 90, y: 50, w: 30, h: 200 },
-      { x: 90, y: 50, w: 90, h: 30 },
-      { x: 150, y: 50, w: 30, h: 200 },
-      { x: 150, y: 220, w: 90, h: 30 },
-      { x: 210, y: 50, w: 30, h: 200 },
-      { x: 210, y: 50, w: 60, h: 30 },
-      { x: 240, y: 50, w: 30, h: 230 },
-    ],
+    start: { x: 28, y: 28 },
+    end: { x: 252, y: 252 },
   },
-  // Level 2 — Spiral inward
+  // Level 2 — Zigzag with tricky forks and dead-ends (Medium)
   {
     walls: [
-      "M0 0 L280 0 L280 280 L0 280 Z",
-      "M60 60 L220 60",
-      "M220 60 L220 220",
-      "M60 220 L220 220",
-      "M60 120 L60 220",
-      "M60 120 L160 120",
-      "M160 120 L160 180",
-      "M100 180 L160 180",
+      "M0 0 L280 0 L280 280 L0 280 Z", // Border
+      "M70 0 L70 210",       // Wall 1
+      "M140 70 L140 280",    // Wall 2
+      "M210 0 L210 210",     // Wall 3
+      
+      // Horizontal traps and dead-ends
+      "M0 140 L40 140",      // Dead end in first column
+      "M70 140 L110 140",    // Obstacle forcing zigzag
+      "M170 140 L210 140",   // Obstacle in third column
+      "M140 70 L180 70",     // Trap in second column (creates a tricky loop)
+      "M210 210 L250 210",   // Bottom obstacle
     ],
-    start: { x: 30, y: 30 },
-    end: { x: 120, y: 150 },
-    pathZones: [
-      { x: 15, y: 15, w: 250, h: 45 },
-      { x: 220, y: 15, w: 45, h: 250 },
-      { x: 60, y: 220, w: 205, h: 45 },
-      { x: 15, y: 60, w: 45, h: 165 },
-      { x: 15, y: 60, w: 105, h: 60 },
-      { x: 60, y: 120, w: 45, h: 100 },
-      { x: 60, y: 175, w: 100, h: 45 },
-      { x: 100, y: 120, w: 60, h: 60 },
-    ],
+    start: { x: 35, y: 35 },
+    end: { x: 245, y: 245 },
   },
-  // Level 3 — Complex path
+  // Level 3 — Highly winding labyrinth with shortcuts, forks and dead-ends (Hard)
   {
     walls: [
-      "M0 0 L280 0 L280 280 L0 280 Z",
-      "M80 0 L80 80",
-      "M80 80 L160 80",
-      "M160 0 L160 160",
-      "M0 140 L80 140",
-      "M80 140 L80 220",
-      "M160 100 L240 100",
-      "M240 100 L240 180",
-      "M160 180 L240 180",
-      "M80 220 L200 220",
-      "M200 180 L200 280",
+      "M0 0 L280 0 L280 280 L0 280 Z", // Border
+      "M46 0 L46 220",       // Wall 1
+      "M92 60 L92 280",      // Wall 2
+      "M138 0 L138 80",      // Wall 3 Segment A
+      "M138 140 L138 220",   // Wall 3 Segment B (leaves a tricky fork/shortcut at y = 80-140)
+      "M184 60 L184 160",    // Wall 4 Segment A
+      "M184 220 L184 280",   // Wall 4 Segment B (leaves another fork/shortcut at y = 160-220)
+      "M230 0 L230 220",     // Wall 5
+      
+      // Obstacles & Devious Traps
+      "M138 240 L184 240",   // Dead-end blocker at bottom of column 4 (punishes shortcut takers!)
+      "M0 120 L30 120",      // Obstacle 1
+      "M62 80 L92 80",       // Obstacle 2
+      "M46 180 L76 180",     // Obstacle 3
+      "M108 120 L138 120",   // Obstacle 4
+      "M200 120 L230 120",   // Obstacle 5
+      "M230 80 L260 80",     // Obstacle 6
+      "M250 180 L280 180",   // Obstacle 7
     ],
-    start: { x: 40, y: 30 },
-    end: { x: 250, y: 250 },
-    pathZones: [
-      { x: 15, y: 15, w: 65, h: 125 },
-      { x: 15, y: 100, w: 145, h: 40 },
-      { x: 80, y: 80, w: 80, h: 60 },
-      { x: 80, y: 60, w: 40, h: 80 },
-      { x: 120, y: 15, w: 40, h: 70 },
-      { x: 160, y: 160, w: 80, h: 60 },
-      { x: 200, y: 180, w: 65, h: 85 },
-      { x: 160, y: 100, w: 40, h: 80 },
-      { x: 200, y: 15, w: 65, h: 85 },
-      { x: 240, y: 60, w: 25, h: 220 },
-      { x: 80, y: 180, w: 40, h: 85 },
-      { x: 15, y: 220, w: 110, h: 45 },
-    ],
+    start: { x: 23, y: 23 },
+    end: { x: 257, y: 257 },
   },
 ];
 
-function Maze({ data, onNext, onRestart }) {
+function Maze({ data, onNext }) {
   const levelIndex = parseInt(data.n, 10) - 1;
   const mazeData = MAZES[levelIndex] || MAZES[0];
 
   const canvasRef = React.useRef(null);
+  const collisionCanvasRef = React.useRef(null);
+  const collisionCtxRef = React.useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [path, setPath] = useState([]);
   const [completed, setCompleted] = useState(false);
@@ -384,15 +414,56 @@ function Maze({ data, onNext, onRestart }) {
   const [startedFromStart, setStartedFromStart] = useState(false);
 
   const CANVAS_SIZE = 280;
-  const START_RADIUS = 20;
-  const END_RADIUS = 20;
+  const START_RADIUS = 25;
+  const END_RADIUS = 25;
+  const WALL_THICKNESS = 8; // Collision wall thickness
 
-  // Check if point is in valid path zone
+  // Create offscreen collision canvas on mount
+  useEffect(() => {
+    const offscreen = document.createElement("canvas");
+    offscreen.width = CANVAS_SIZE;
+    offscreen.height = CANVAS_SIZE;
+    collisionCanvasRef.current = offscreen;
+    const ctx = offscreen.getContext("2d");
+    collisionCtxRef.current = ctx;
+
+    // Fill entire canvas with "valid" color (green)
+    ctx.fillStyle = "#00FF00";
+    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+    // Draw walls in "invalid" color (red) with thick strokes
+    ctx.strokeStyle = "#FF0000";
+    ctx.lineWidth = WALL_THICKNESS;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    mazeData.walls.forEach((wallPath) => {
+      const path2D = new Path2D(wallPath);
+      ctx.stroke(path2D);
+    });
+
+    // Also fill outside the border as invalid
+    // The border is the first wall path (M0 0 L280 0 L280 280 L0 280 Z)
+    // We need to mark outside as invalid - draw thick border
+    ctx.lineWidth = WALL_THICKNESS * 2;
+    ctx.strokeRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  }, [mazeData.walls]);
+
+  // Check if point is in valid area using pixel sampling
   const isInValidZone = (x, y) => {
-    return mazeData.pathZones.some(zone =>
-      x >= zone.x && x <= zone.x + zone.w &&
-      y >= zone.y && y <= zone.y + zone.h
-    );
+    const ctx = collisionCtxRef.current;
+    if (!ctx) return true; // Fallback to valid if canvas not ready
+
+    // Clamp coordinates to canvas bounds
+    const px = Math.max(0, Math.min(CANVAS_SIZE - 1, Math.floor(x)));
+    const py = Math.max(0, Math.min(CANVAS_SIZE - 1, Math.floor(y)));
+
+    // Get pixel color at position
+    const imageData = ctx.getImageData(px, py, 1, 1);
+    const [r, g] = imageData.data;
+
+    // Green = valid, Red = invalid
+    return g > r;
   };
 
   // Check if point is near start
@@ -623,11 +694,10 @@ function Maze({ data, onNext, onRestart }) {
           </button>
         )}
       </div>
-      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div className="screen-cta">
         <button className="btn btn-primary" onClick={onNext}>
           {completed ? "Continuar →" : "Saltar laberinto →"}
         </button>
-        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
@@ -690,7 +760,7 @@ function End({ answers, onRestart }) {
       </div>
       <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <a href="/#modulos" className="btn btn-primary">
-          {tier.key === "r" ? "Conocer plan Premium →" : "Explorar módulos →"}
+          {tier.key === "r" ? "Conocer plan Premium →" : "Explorar planes →"}
         </a>
         <button className="btn btn-ghost" onClick={onRestart}>Repetir la autoevaluación</button>
       </div>
@@ -808,17 +878,14 @@ function App() {
     setAnswers(next);
   };
 
-  // Show restart option on all screens except splash and end
-  const showRestartOption = s.type !== "splash" && s.type !== "end" && step > 0;
-
   return (
     <>
-      <a href="/" className="exit-link">← Volver al sitio</a>
+      <a href="/" className="exit-link">← Volver al Home</a>
       <div className={cls}>
-        <ScreenChrome stageKey={stageKey} onBack={back} canGoBack={step > 0} extraLabel={extraLabel}>
+        <ScreenChrome stageKey={stageKey} onBack={back} canGoBack={step > 0} onRestart={restart} extraLabel={extraLabel}>
           {s.type === "splash" && <Splash onNext={next} />}
-          {s.type === "avatar" && <Avatar onNext={next} onRestart={restart} />}
-          {s.type === "level" && <Level data={LEVELS[s.level]} onNext={next} onRestart={restart} />}
+          {s.type === "avatar" && <Avatar onNext={next} />}
+          {s.type === "level" && <Level data={LEVELS[s.level]} onNext={next} />}
           {s.type === "question" && (
             <Question
               data={LEVELS[s.level]}
@@ -827,10 +894,9 @@ function App() {
               selected={answers[s.globalQ]}
               onSelect={handleSelect}
               onNext={next}
-              onRestart={restart}
             />
           )}
-          {s.type === "maze" && <Maze data={LEVELS[s.level]} onNext={next} onRestart={restart} />}
+          {s.type === "maze" && <Maze data={LEVELS[s.level]} onNext={next} />}
           {s.type === "end" && <End answers={answers} onRestart={restart} />}
         </ScreenChrome>
       </div>
