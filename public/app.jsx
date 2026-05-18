@@ -12,13 +12,13 @@ function Modules() {
       tag: "APRENDE",
       title: "Trastorno Dismórfico Corporal",
       desc: "Una guía clara, sin estigmas, sobre qué es el TDC, cómo se manifiesta y por qué afecta a jóvenes deportistas.",
-      bullets: ["Lectura 8 min", "Casos cotidianos", "Glosario clínico"],
+      bullets: [],
     },
     {
       tag: "COMUNIDAD",
       title: "Testimonios",
       desc: "Historias reales de personas que vivieron el TDC y encontraron herramientas para reconciliarse con su cuerpo.",
-      bullets: ["12 historias", "Verificadas por equipo clínico", "Actualización mensual"],
+      bullets: ["Verificadas por equipo clínico", "Actualización mensual"],
     },
   ];
 

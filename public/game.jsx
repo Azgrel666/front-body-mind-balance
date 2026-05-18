@@ -193,7 +193,7 @@ function Splash({ onNext }) {
   );
 }
 
-function Avatar({ onNext }) {
+function Avatar({ onNext, onRestart }) {
   return (
     <>
       <div className="screen-body">
@@ -221,14 +221,15 @@ function Avatar({ onNext }) {
           ⚙ Constructor de avatar — próximamente
         </div>
       </div>
-      <div className="screen-cta">
+      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <button className="btn btn-primary" onClick={onNext}>Saltar y comenzar →</button>
+        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
 }
 
-function Level({ data, onNext }) {
+function Level({ data, onNext, onRestart }) {
   return (
     <>
       <div className="screen-body">
@@ -242,14 +243,15 @@ function Level({ data, onNext }) {
           <span className="chip"><span className="dot"></span>≈ 3 min</span>
         </div>
       </div>
-      <div className="screen-cta">
+      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <button className="btn btn-primary" onClick={onNext}>Empezar nivel →</button>
+        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
 }
 
-function Question({ data, qIndex, globalQ, selected, onSelect, onNext }) {
+function Question({ data, qIndex, globalQ, selected, onSelect, onNext, onRestart }) {
   const isFirstOfLevel = qIndex === 0;
   return (
     <>
@@ -273,16 +275,244 @@ function Question({ data, qIndex, globalQ, selected, onSelect, onNext }) {
           ))}
         </div>
       </div>
-      <div className="screen-cta">
+      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <button className="btn btn-primary" disabled={selected === null || selected === undefined} onClick={onNext}>
           Continuar →
         </button>
+        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
 }
 
-function Maze({ data, onNext }) {
+// =================================================================
+// MAZE DATA — 3 unique mazes, one per level
+// Each maze has: walls (SVG paths), validPath (array of {x,y,r} zones), start, end
+// =================================================================
+const MAZES = [
+  // Level 1 — Simple serpentine
+  {
+    walls: [
+      "M0 0 L280 0 L280 280 L0 280 Z", // outer border
+      "M60 0 L60 200",
+      "M120 80 L120 280",
+      "M180 0 L180 200",
+      "M240 80 L240 280",
+    ],
+    start: { x: 30, y: 30 },
+    end: { x: 250, y: 250 },
+    pathZones: [
+      { x: 30, y: 30, w: 30, h: 220 },
+      { x: 30, y: 220, w: 90, h: 30 },
+      { x: 90, y: 50, w: 30, h: 200 },
+      { x: 90, y: 50, w: 90, h: 30 },
+      { x: 150, y: 50, w: 30, h: 200 },
+      { x: 150, y: 220, w: 90, h: 30 },
+      { x: 210, y: 50, w: 30, h: 200 },
+      { x: 210, y: 50, w: 60, h: 30 },
+      { x: 240, y: 50, w: 30, h: 230 },
+    ],
+  },
+  // Level 2 — Spiral inward
+  {
+    walls: [
+      "M0 0 L280 0 L280 280 L0 280 Z",
+      "M60 60 L220 60",
+      "M220 60 L220 220",
+      "M60 220 L220 220",
+      "M60 120 L60 220",
+      "M60 120 L160 120",
+      "M160 120 L160 180",
+      "M100 180 L160 180",
+    ],
+    start: { x: 30, y: 30 },
+    end: { x: 120, y: 150 },
+    pathZones: [
+      { x: 15, y: 15, w: 250, h: 45 },
+      { x: 220, y: 15, w: 45, h: 250 },
+      { x: 60, y: 220, w: 205, h: 45 },
+      { x: 15, y: 60, w: 45, h: 165 },
+      { x: 15, y: 60, w: 105, h: 60 },
+      { x: 60, y: 120, w: 45, h: 100 },
+      { x: 60, y: 175, w: 100, h: 45 },
+      { x: 100, y: 120, w: 60, h: 60 },
+    ],
+  },
+  // Level 3 — Complex path
+  {
+    walls: [
+      "M0 0 L280 0 L280 280 L0 280 Z",
+      "M80 0 L80 80",
+      "M80 80 L160 80",
+      "M160 0 L160 160",
+      "M0 140 L80 140",
+      "M80 140 L80 220",
+      "M160 100 L240 100",
+      "M240 100 L240 180",
+      "M160 180 L240 180",
+      "M80 220 L200 220",
+      "M200 180 L200 280",
+    ],
+    start: { x: 40, y: 30 },
+    end: { x: 250, y: 250 },
+    pathZones: [
+      { x: 15, y: 15, w: 65, h: 125 },
+      { x: 15, y: 100, w: 145, h: 40 },
+      { x: 80, y: 80, w: 80, h: 60 },
+      { x: 80, y: 60, w: 40, h: 80 },
+      { x: 120, y: 15, w: 40, h: 70 },
+      { x: 160, y: 160, w: 80, h: 60 },
+      { x: 200, y: 180, w: 65, h: 85 },
+      { x: 160, y: 100, w: 40, h: 80 },
+      { x: 200, y: 15, w: 65, h: 85 },
+      { x: 240, y: 60, w: 25, h: 220 },
+      { x: 80, y: 180, w: 40, h: 85 },
+      { x: 15, y: 220, w: 110, h: 45 },
+    ],
+  },
+];
+
+function Maze({ data, onNext, onRestart }) {
+  const levelIndex = parseInt(data.n, 10) - 1;
+  const mazeData = MAZES[levelIndex] || MAZES[0];
+
+  const canvasRef = React.useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [path, setPath] = useState([]);
+  const [completed, setCompleted] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [startedFromStart, setStartedFromStart] = useState(false);
+
+  const CANVAS_SIZE = 280;
+  const START_RADIUS = 20;
+  const END_RADIUS = 20;
+
+  // Check if point is in valid path zone
+  const isInValidZone = (x, y) => {
+    return mazeData.pathZones.some(zone =>
+      x >= zone.x && x <= zone.x + zone.w &&
+      y >= zone.y && y <= zone.y + zone.h
+    );
+  };
+
+  // Check if point is near start
+  const isNearStart = (x, y) => {
+    const dx = x - mazeData.start.x;
+    const dy = y - mazeData.start.y;
+    return Math.sqrt(dx * dx + dy * dy) < START_RADIUS;
+  };
+
+  // Check if point is near end
+  const isNearEnd = (x, y) => {
+    const dx = x - mazeData.end.x;
+    const dy = y - mazeData.end.y;
+    return Math.sqrt(dx * dx + dy * dy) < END_RADIUS;
+  };
+
+  // Get coordinates from event
+  const getCoords = (e) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = CANVAS_SIZE / rect.width;
+    const scaleY = CANVAS_SIZE / rect.height;
+
+    let clientX, clientY;
+    if (e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
+    };
+  };
+
+  // Draw the path on canvas
+  const drawPath = React.useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+    if (path.length < 2) return;
+
+    ctx.beginPath();
+    ctx.moveTo(path[0].x, path[0].y);
+    for (let i = 1; i < path.length; i++) {
+      ctx.lineTo(path[i].x, path[i].y);
+    }
+    ctx.strokeStyle = failed ? "#D4547A" : completed ? "#5FAD7A" : "#F2EDE8";
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.stroke();
+  }, [path, failed, completed]);
+
+  useEffect(() => {
+    drawPath();
+  }, [drawPath]);
+
+  const handleStart = (e) => {
+    if (completed) return;
+    e.preventDefault();
+    const coords = getCoords(e);
+
+    if (isNearStart(coords.x, coords.y)) {
+      setIsDrawing(true);
+      setStartedFromStart(true);
+      setPath([coords]);
+      setFailed(false);
+    }
+  };
+
+  const handleMove = (e) => {
+    if (!isDrawing || completed) return;
+    e.preventDefault();
+    const coords = getCoords(e);
+
+    // Check if still in valid zone
+    if (!isInValidZone(coords.x, coords.y) && !isNearStart(coords.x, coords.y) && !isNearEnd(coords.x, coords.y)) {
+      setFailed(true);
+      setIsDrawing(false);
+      setTimeout(() => {
+        setPath([]);
+        setFailed(false);
+      }, 800);
+      return;
+    }
+
+    setPath(prev => [...prev, coords]);
+
+    // Check if reached end
+    if (isNearEnd(coords.x, coords.y) && startedFromStart) {
+      setCompleted(true);
+      setIsDrawing(false);
+    }
+  };
+
+  const handleEnd = () => {
+    if (isDrawing && !completed) {
+      setIsDrawing(false);
+      if (!completed) {
+        setTimeout(() => {
+          setPath([]);
+        }, 300);
+      }
+    }
+  };
+
+  const resetMaze = () => {
+    setPath([]);
+    setCompleted(false);
+    setFailed(false);
+    setStartedFromStart(false);
+  };
+
   return (
     <>
       <div className="screen-body">
@@ -291,27 +521,113 @@ function Maze({ data, onNext }) {
           Atraviesa el <em style={{ fontStyle: "italic", color: "var(--rosa)" }}>laberinto.</em>
         </h3>
         <p style={{ color: "rgba(242,237,232,0.65)", fontSize: 14, marginBottom: 8 }}>
-          Recorre con tu dedo el camino desde el punto rosa hasta el punto crema, sin tocar los muros.
+          {completed
+            ? "¡Excelente! Has completado el laberinto."
+            : failed
+              ? "¡Ups! Tocaste un muro. Intenta de nuevo."
+              : "Arrastra desde el punto rosa hasta el punto crema sin tocar los muros."}
         </p>
-        <div className="maze-board">
-          <svg className="maze-svg" viewBox="0 0 280 280" fill="none" stroke="rgba(242,237,232,0.25)" strokeWidth="3" strokeLinecap="round">
-            <path d="M30 30 L30 90 L90 90 L90 50 L150 50 L150 110 L210 110 L210 50 L250 50" />
-            <path d="M30 130 L90 130 L90 190 L30 190 L30 250 L150 250 L150 190 L210 190 L210 250 L250 250" />
-            <path d="M150 130 L210 130 L210 170 L250 170 L250 110" />
-            <circle cx="40" cy="40" r="6" fill="#D4547A" stroke="none" />
-            <circle cx="240" cy="240" r="6" fill="#F2EDE8" stroke="none" />
+        <div className="maze-board" style={{ position: "relative" }}>
+          <svg
+            className="maze-svg"
+            viewBox="0 0 280 280"
+            fill="none"
+            strokeLinecap="round"
+            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+          >
+            {/* Valid path zones (debug: uncomment to see) */}
+            {/* {mazeData.pathZones.map((zone, i) => (
+              <rect key={i} x={zone.x} y={zone.y} width={zone.w} height={zone.h} fill="rgba(95,173,122,0.2)" />
+            ))} */}
+
+            {/* Walls */}
+            {mazeData.walls.map((wall, i) => (
+              <path key={i} d={wall} stroke="rgba(242,237,232,0.3)" strokeWidth="3" fill="none" />
+            ))}
+
+            {/* Start point */}
+            <circle
+              cx={mazeData.start.x}
+              cy={mazeData.start.y}
+              r="10"
+              fill="#D4547A"
+              className={!completed && !isDrawing ? "maze-pulse" : ""}
+            />
+            <circle cx={mazeData.start.x} cy={mazeData.start.y} r="5" fill="#F2EDE8" />
+
+            {/* End point */}
+            <circle
+              cx={mazeData.end.x}
+              cy={mazeData.end.y}
+              r="10"
+              fill={completed ? "#5FAD7A" : "#F2EDE8"}
+            />
+            <circle cx={mazeData.end.x} cy={mazeData.end.y} r="5" fill={completed ? "#F2EDE8" : "#D4547A"} />
           </svg>
-          <div className="maze-start"><span className="marker"></span><span>Inicio</span></div>
-          <div className="maze-end"><span className="marker"></span><span>Final</span></div>
-          <div className="maze-overlay">
-            <span className="pill">PRÓXIMAMENTE</span>
-            <h4>Laberinto<br /><em>táctil.</em></h4>
-            <p>Esta mecánica se construirá en la siguiente fase. Tu progreso ya quedó registrado.</p>
+
+          {/* Canvas for drawing path */}
+          <canvas
+            ref={canvasRef}
+            width={CANVAS_SIZE}
+            height={CANVAS_SIZE}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              touchAction: "none",
+              cursor: completed ? "default" : "crosshair"
+            }}
+            onMouseDown={handleStart}
+            onMouseMove={handleMove}
+            onMouseUp={handleEnd}
+            onMouseLeave={handleEnd}
+            onTouchStart={handleStart}
+            onTouchMove={handleMove}
+            onTouchEnd={handleEnd}
+          />
+
+          {/* Labels */}
+          <div className="maze-start" style={{ left: mazeData.start.x - 30, top: mazeData.start.y + 20 }}>
+            <span>Inicio</span>
           </div>
+          <div className="maze-end" style={{ left: mazeData.end.x - 20, top: mazeData.end.y - 35 }}>
+            <span>Meta</span>
+          </div>
+
+          {/* Success overlay */}
+          {completed && (
+            <div className="maze-success">
+              <span className="success-icon">✓</span>
+              <span>¡Completado!</span>
+            </div>
+          )}
         </div>
+
+        {!completed && path.length > 0 && (
+          <button
+            onClick={resetMaze}
+            style={{
+              marginTop: 12,
+              background: "transparent",
+              border: "1px solid rgba(242,237,232,0.3)",
+              color: "rgba(242,237,232,0.7)",
+              padding: "8px 16px",
+              borderRadius: 999,
+              fontSize: 12,
+              cursor: "pointer"
+            }}
+          >
+            Reiniciar laberinto
+          </button>
+        )}
       </div>
-      <div className="screen-cta">
-        <button className="btn btn-primary" onClick={onNext}>Siguiente →</button>
+      <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <button className="btn btn-primary" onClick={onNext}>
+          {completed ? "Continuar →" : "Saltar laberinto →"}
+        </button>
+        {onRestart && <button className="btn btn-ghost" onClick={onRestart}>Empezar de nuevo</button>}
       </div>
     </>
   );
@@ -383,17 +699,76 @@ function End({ answers, onRestart }) {
 }
 
 // =================================================================
+// STORAGE KEYS
+// =================================================================
+const STORAGE_KEY = "bodymind_game_progress";
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const { step, answers } = JSON.parse(saved);
+      return { step: step || 0, answers: answers || Array(TOTAL_QUESTIONS).fill(null) };
+    }
+  } catch (e) {
+    console.warn("Could not load progress:", e);
+  }
+  return { step: 0, answers: Array(TOTAL_QUESTIONS).fill(null) };
+}
+
+function saveProgress(step, answers) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ step, answers }));
+  } catch (e) {
+    console.warn("Could not save progress:", e);
+  }
+}
+
+function clearProgress() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (e) {
+    console.warn("Could not clear progress:", e);
+  }
+}
+
+// =================================================================
 // APP
 // =================================================================
 function App() {
   const screens = useMemo(() => buildScreens(), []);
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState(Array(TOTAL_QUESTIONS).fill(null));
+
+  // Load saved progress on mount
+  const [step, setStep] = useState(() => {
+    const { step } = loadProgress();
+    return step;
+  });
+  const [answers, setAnswers] = useState(() => {
+    const { answers } = loadProgress();
+    return answers;
+  });
+
+  // Save progress whenever step or answers change (but not on end screen)
+  useEffect(() => {
+    const s = screens[step];
+    if (s && s.type !== "end") {
+      saveProgress(step, answers);
+    }
+  }, [step, answers, screens]);
+
+  // Clear progress when reaching end screen
+  useEffect(() => {
+    const s = screens[step];
+    if (s && s.type === "end") {
+      clearProgress();
+    }
+  }, [step, screens]);
 
   const go = (n) => setStep(Math.max(0, Math.min(screens.length - 1, n)));
   const next = () => { go(step + 1); window.scrollTo(0, 0); };
   const back = () => { go(step - 1); window.scrollTo(0, 0); };
   const restart = () => {
+    clearProgress();
     setAnswers(Array(TOTAL_QUESTIONS).fill(null));
     go(0);
     window.scrollTo(0, 0);
@@ -433,14 +808,17 @@ function App() {
     setAnswers(next);
   };
 
+  // Show restart option on all screens except splash and end
+  const showRestartOption = s.type !== "splash" && s.type !== "end" && step > 0;
+
   return (
     <>
       <a href="/" className="exit-link">← Volver al sitio</a>
       <div className={cls}>
         <ScreenChrome stageKey={stageKey} onBack={back} canGoBack={step > 0} extraLabel={extraLabel}>
           {s.type === "splash" && <Splash onNext={next} />}
-          {s.type === "avatar" && <Avatar onNext={next} />}
-          {s.type === "level" && <Level data={LEVELS[s.level]} onNext={next} />}
+          {s.type === "avatar" && <Avatar onNext={next} onRestart={restart} />}
+          {s.type === "level" && <Level data={LEVELS[s.level]} onNext={next} onRestart={restart} />}
           {s.type === "question" && (
             <Question
               data={LEVELS[s.level]}
@@ -449,9 +827,10 @@ function App() {
               selected={answers[s.globalQ]}
               onSelect={handleSelect}
               onNext={next}
+              onRestart={restart}
             />
           )}
-          {s.type === "maze" && <Maze data={LEVELS[s.level]} onNext={next} />}
+          {s.type === "maze" && <Maze data={LEVELS[s.level]} onNext={next} onRestart={restart} />}
           {s.type === "end" && <End answers={answers} onRestart={restart} />}
         </ScreenChrome>
       </div>

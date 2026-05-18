@@ -632,7 +632,7 @@ section.borgona .section-header .display em { color: var(--rosa); }
    CTA Final
    ========================================================= */
 .cta-final {
-  padding: 120px 0;
+  padding: 2rem 0;
   text-align: center;
 }
 .cta-final h2 {
@@ -685,12 +685,106 @@ section.borgona .section-header .display em { color: var(--rosa); }
    Responsive
    ========================================================= */
 @media (max-width: 1024px) {
-  .hero-grid, .definicion-body, .mirror-row, .cycle-wrap, .muscular-wrap { grid-template-columns: 1fr; gap: 40px; }
+  :root {
+    --gutter: clamp(16px, 4vw, 32px);
+  }
+
+  .hero-grid, .definicion-body, .mirror-row, .cycle-wrap, .muscular-wrap { grid-template-columns: 1fr; gap: 32px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .manifest-grid, .check-grid { grid-template-columns: 1fr; }
-  .hero { padding-top: 40px; }
+
+  .hero { padding: 40px 0 60px; }
+  .hero h1 { font-size: clamp(48px, 8vw, 80px); }
+  .hero-grid { padding: 0; gap: 32px; }
+  .hero-visual { max-width: 280px; margin: 0 auto; }
+
+  section.spread { padding: clamp(60px, 10vh, 100px) 0; }
+  .section-header { margin-bottom: 36px; }
+  .section-header .display { font-size: clamp(32px, 6vw, 52px); }
+
+  .definicion-lead { font-size: clamp(28px, 5vw, 40px); }
+  .mirror-row { margin-top: 48px; }
+  .mirror-card { padding: 28px 24px; }
+
+  .stat-card { padding: 28px 22px; min-height: 180px; }
+  .stat-num { font-size: clamp(42px, 8vw, 64px); }
+
+  .manifest-card { padding: 28px 24px; }
+  .manifest-card h4 { font-size: 26px; }
+
+  .cycle-text h2 { font-size: clamp(30px, 5vw, 44px); }
+  .cycle-visual { max-width: 320px; margin: 0 auto; }
+
+  .muscular-visual { padding: 24px; }
+  .muscular-visual h4 { font-size: 26px; }
+
+  .check-item { padding: 18px 20px; }
+
+  .cta-final { padding: 60px 0; }
+  .cta-final h2 { font-size: clamp(36px, 7vw, 56px); }
+
+  .footer { padding: 40px 0 24px; }
 }
+
 @media (max-width: 720px) {
+  :root {
+    --gutter: 16px;
+  }
+
   .stats-grid { grid-template-columns: 1fr; }
   .nav-breadcrumb { display: none; }
+  .nav-inner { padding: 12px var(--gutter); }
+  .nav-back { padding: 8px 14px; font-size: 10px; }
+  .brand { font-size: 18px; gap: 8px; }
+  .brand img { width: 32px; height: 32px; }
+
+  .hero { padding: 24px 0 40px; }
+  .hero h1 { font-size: clamp(36px, 10vw, 56px); }
+  .hero p.lede { margin-top: 20px; font-size: 15px; }
+  .hero-toc { margin-top: 28px; }
+  .hero-toc a { padding: 12px 0; font-size: 13px; }
+  .hero-visual { max-width: 200px; }
+
+  section.spread { padding: clamp(48px, 8vh, 80px) 0; }
+  .section-header { margin-bottom: 28px; }
+  .section-header .display { font-size: clamp(28px, 7vw, 40px); }
+
+  .definicion-lead { font-size: clamp(24px, 6vw, 32px); }
+  .definicion-detail { gap: 16px; font-size: 15px; }
+  .mirror-row { margin-top: 32px; gap: 20px; }
+  .mirror-card { padding: 24px 20px; }
+  .mirror-card h4 { font-size: 24px; }
+  .mirror-figure { height: 180px; }
+
+  .stat-card { padding: 24px 20px; min-height: auto; }
+  .stat-num { font-size: clamp(36px, 10vw, 52px); }
+  .stat-label { font-size: 13px; }
+
+  .manifest-card { padding: 24px 20px; }
+  .manifest-card h4 { font-size: 24px; }
+  .manifest-icon { width: 48px; height: 48px; font-size: 24px; }
+
+  .cycle-wrap { gap: 28px; }
+  .cycle-text h2 { font-size: clamp(26px, 7vw, 36px); margin-bottom: 16px; }
+  .cycle-text p { font-size: 15px; margin-bottom: 16px; }
+  .cycle-step { padding: 12px 14px; }
+  .cycle-visual { max-width: 260px; }
+
+  .muscular-wrap { gap: 28px; }
+  .muscular-text p { font-size: 15px; }
+  .muscular-warning { padding: 20px 22px; }
+  .muscular-visual { padding: 20px; }
+  .muscular-visual h4 { font-size: 24px; }
+
+  .check-item { padding: 16px 18px; font-size: 14px; }
+  .check-item .check-mark { width: 20px; height: 20px; font-size: 11px; }
+
+  .cta-final { padding: 48px 0; }
+  .cta-final h2 { font-size: clamp(32px, 8vw, 48px); margin-bottom: 16px; }
+  .cta-final p { font-size: 15px; margin-bottom: 28px; }
+  .cta-row { gap: 10px; }
+  .btn { padding: 12px 20px; font-size: 13px; }
+
+  .footer { padding: 32px 0 20px; }
+  .footer-inner { gap: 16px; }
 }

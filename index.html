@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bodymind Balance — Fortalece tu mente, equilibra tu cuerpo</title>
-<meta name="description" content="Startup de bienestar dedicada a la promoción de una imagen corporal positiva y la prevención del trastorno dismórfico corporal en jóvenes deportistas. Nacimos de un proyecto universitario." />
+<meta name="description" content="Promoción de una imagen corporal positiva y prevención del trastorno dismórfico corporal en jóvenes deportistas." />
 <link rel="icon" type="image/png" href="/assets/logo.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,6 +35,19 @@
       <a href="#modulos" class="btn btn-ghost">Contenido gratuito</a>
       <a href="/game.html" class="btn btn-primary">Únete</a>
     </div>
+    <button class="nav-toggle" aria-label="Menú" onclick="document.body.classList.toggle('menu-open')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+  <div class="nav-mobile">
+    <a href="#quienes" onclick="document.body.classList.remove('menu-open')">Quiénes somos</a>
+    <a href="#aprende" onclick="document.body.classList.remove('menu-open')">Aprende</a>
+    <a href="#modulos" onclick="document.body.classList.remove('menu-open')">Módulos</a>
+    <a href="#juego" onclick="document.body.classList.remove('menu-open')">Autoevaluación</a>
+    <a href="#testimonios" onclick="document.body.classList.remove('menu-open')">Historias</a>
+    <a href="/game.html" class="btn btn-primary" style="margin-top: 16px;">Únete</a>
   </div>
 </nav>
 
@@ -44,19 +57,17 @@
 <header class="hero container" id="inicio">
   <div class="hero-grid">
     <div class="hero-text">
-      <span class="eyebrow">Startup de bienestar · Salud mental & deporte</span>
+      <span class="eyebrow">Salud mental & deporte</span>
       <h1 class="hero-title">
-        Fortalece<br />
-        tu <em>mente</em>,<span class="accent-bar"></span><br />
-        equilibra<br />
-        tu <em>cuerpo</em>.
+        Fortalece tu <em>mente</em>,<span class="accent-bar"></span><br />
+        equilibra tu <em>cuerpo</em>.
       </h1>
       <p class="hero-sub">
-        Acompañamos a jóvenes deportistas a construir una relación honesta y saludable con su imagen corporal. Espacio seguro, evidencia clínica, una comunidad que escucha.
+        Acompañamos a jóvenes que realizan actividad física a construir una relación honesta y saludable con su imagen corporal. Espacio seguro, evidencia clínica, una comunidad que escucha.
       </p>
       <div class="hero-cta-row">
         <a href="/game.html" class="btn btn-primary">Hacer la autoevaluación →</a>
-        <a href="#quienes" class="btn-arrow">Conocer el equipo</a>
+        <a href="#quienes" class="btn-arrow">Conócenos</a>
       </div>
       <div class="hero-meta">
         <div class="stat">
@@ -300,7 +311,7 @@
           <div class="avatar"><em>S</em></div>
           <div class="who-text">
             <span class="name">Stella, 25 años</span>
-            <span class="meta">Paciente · Bogotá</span>
+            <span class="meta">Paciente</span>
           </div>
         </div>
       </article>
@@ -313,7 +324,7 @@
           <div class="avatar"><em>R</em></div>
           <div class="who-text">
             <span class="name">Ramón, 23 años</span>
-            <span class="meta">Paciente · Medellín</span>
+            <span class="meta">Paciente</span>
           </div>
         </div>
       </article>
@@ -346,7 +357,7 @@
           <img src="/assets/logo.png" alt="" style="width: 36px; height: 36px; object-fit: contain;" />
           <span>Bodymind <em style="font-style: italic;">balance</em></span>
         </div>
-        <p>Startup de bienestar nacida de un proyecto universitario, dedicada a la promoción de la imagen corporal positiva y la prevención del TDC en jóvenes deportistas.</p>
+        <p>Promoción de la imagen corporal positiva y prevención del TDC en jóvenes deportistas.</p>
       </div>
       <div>
         <h6>Sitio</h6>
@@ -362,23 +373,11 @@
         <ul>
           <li><a href="/game.html">El juego</a></li>
           <li><a href="#testimonios">Historias</a></li>
-          <li><a href="#">Investigación</a></li>
-          <li><a href="#">Equipo clínico</a></li>
-        </ul>
-      </div>
-      <div>
-        <h6>Contacto</h6>
-        <ul>
-          <li><a href="#">hola@bodymindbalance.co</a></li>
-          <li><a href="#">+57 311 000 0000</a></li>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">TikTok</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 · Bodymind Balance · Proyecto universitario</span>
-      <span>Hecho con cuidado · Bogotá, Colombia</span>
+      <span>© 2026 · Bodymind Balance · Proyecto de Aula · FUNDACIÓN UNIVERSITARIA TECNOLÓGICO COMFENALCO</span>
     </div>
   </div>
 </footer>
