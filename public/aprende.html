@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aprende · Trastorno Dismórfico Corporal — Bodymind Balance</title>
+<meta name="description" content="Una guía visual e interactiva sobre el trastorno dismórfico corporal: qué es, cómo se manifiesta, el ciclo del TDC, dismorfia muscular y cuándo buscar ayuda." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="aprende.css" />
+</head>
+<body>
+
+<!-- SVG filter for the "distortion" effect on the mirror visual -->
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <filter id="wobble">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="3">
+        <animate attributeName="baseFrequency" dur="14s" values="0.012 0.018; 0.018 0.012; 0.012 0.018" repeatCount="indefinite" />
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" scale="14" />
+    </filter>
+  </defs>
+</svg>
+
+<!-- =========================================================
+     NAV
+     ========================================================= -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="Bodymind Balance.html" class="brand">
+      <img src="assets/logo.png" alt="" />
+      <span>Bodymind <em style="font-style: italic;">balance</em></span>
+    </a>
+    <span class="nav-breadcrumb">Biblioteca · <span>Aprende sobre el TDC</span></span>
+    <a href="Bodymind Balance.html#aprende" class="nav-back">← Volver al sitio</a>
+  </div>
+</nav>
+
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow reveal">Biblioteca · Lectura 01</span>
+        <h1 class="reveal" data-delay="1" style="margin-top: 16px;">
+          Trastorno<br />
+          dismórfico<br />
+          <em>corporal.</em>
+        </h1>
+        <p class="lede reveal" data-delay="2">
+          Una preocupación excesiva por defectos en la apariencia que otros no perciben — pero que para quien lo vive lo cambia todo. Esta es una guía visual para entenderlo.
+        </p>
+
+        <nav class="hero-toc reveal" data-delay="3" aria-label="Tabla de contenido">
+          <a href="#definicion"><span><span class="num">01</span>¿Qué es el TDC?</span><span class="arrow">→</span></a>
+          <a href="#cifras"><span><span class="num">02</span>Cifras y contexto</span><span class="arrow">→</span></a>
+          <a href="#manifestaciones"><span><span class="num">03</span>Cómo se manifiesta</span><span class="arrow">→</span></a>
+          <a href="#ciclo"><span><span class="num">04</span>El ciclo del TDC</span><span class="arrow">→</span></a>
+          <a href="#muscular"><span><span class="num">05</span>Dismorfia muscular</span><span class="arrow">→</span></a>
+          <a href="#ayuda"><span><span class="num">06</span>Cuándo buscar ayuda</span><span class="arrow">→</span></a>
+        </nav>
+      </div>
+
+      <div class="hero-visual reveal" data-delay="2">
+        <div class="hero-disc"></div>
+        <img src="assets/logo.png" alt="" />
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- =========================================================
+     01 · DEFINICIÓN
+     ========================================================= -->
+<section class="spread" id="definicion">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow reveal">01 · ¿Qué es?</span>
+      <h2 class="display reveal" data-delay="1">Lo que otros <em>no ven.</em></h2>
+    </div>
+
+    <div class="definicion-body">
+      <p class="definicion-lead reveal">
+        El TDC se caracteriza por una <em>preocupación excesiva</em> por defectos percibidos en la apariencia física, que suelen ser <span class="marker">imperceptibles</span> o leves para los demás.
+      </p>
+      <div class="definicion-detail">
+        <p class="reveal" data-delay="1">
+          Las personas con TDC creen que los demás se enfocan en su aspecto físico. Otorgan una <strong>importancia desproporcionada</strong> a su apariencia y experimentan vergüenza o rechazo hacia su propio cuerpo.
+        </p>
+        <p class="reveal" data-delay="2">
+          En consecuencia, tienden a recurrir a procedimientos estéticos para corregir los "defectos" percibidos, aunque en muchos casos estas intervenciones <strong>intensifican la sintomatología</strong>.
+        </p>
+        <p class="reveal" data-delay="3">
+          Además, el TDC genera sesgos en la interpretación y codificación de los estímulos, lo que produce una percepción <strong>negativa y distorsionada</strong> de la propia imagen corporal — comprometiendo la calidad de vida en lo laboral, académico y social.
+        </p>
+        <p class="cite reveal" data-delay="4">American Psychiatric Association, 2013</p>
+      </div>
+    </div>
+
+    <div class="mirror-row">
+      <div class="mirror-card reveal">
+        <span class="mirror-tag">● Realidad observada</span>
+        <div class="mirror-figure">
+          <svg class="mirror-svg" viewBox="0 0 110 200" fill="none">
+            <circle cx="55" cy="32" r="22" stroke="currentColor" stroke-width="2.5" />
+            <path d="M30 70 Q55 60 80 70 L82 110 Q80 130 75 160 L70 195 M30 70 L28 110 Q30 130 35 160 L40 195 M55 75 L55 130" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <h4>Lo que es.</h4>
+        <p>Para quienes están alrededor, el cuerpo se ve dentro de la normalidad. No hay un defecto evidente.</p>
+      </div>
+      <div class="mirror-card distorted reveal" data-delay="1">
+        <span class="mirror-tag" style="color: var(--rosa);">● Realidad percibida</span>
+        <div class="mirror-figure">
+          <svg class="mirror-svg" viewBox="0 0 110 200" fill="none">
+            <circle cx="55" cy="32" r="22" stroke="currentColor" stroke-width="2.5" />
+            <path d="M30 70 Q55 60 80 70 L82 110 Q80 130 75 160 L70 195 M30 70 L28 110 Q30 130 35 160 L40 195 M55 75 L55 130" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <h4>Lo que ven.</h4>
+        <p>Para la persona con TDC, el cuerpo aparece distorsionado, desproporcionado o "deforme" — aun frente al mismo espejo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     02 · CIFRAS
+     ========================================================= -->
+<section class="spread dark" id="cifras">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow reveal">02 · Cifras y contexto</span>
+      <h2 class="display reveal" data-delay="1">Más cerca de lo que <em>parece.</em></h2>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-num" data-count="2" data-suffix="%">0%</div>
+        <div class="stat-label">prevalencia global estimada del TDC en población general.</div>
+        <div class="stat-source">APA · DSM-5</div>
+      </div>
+      <div class="stat-card reveal" data-delay="1">
+        <div class="stat-num" data-count="73" data-suffix="%">0%</div>
+        <div class="stat-label">de los casos inician antes de los 18 años — la adolescencia es ventana crítica.</div>
+        <div class="stat-source">PHILLIPS · 2019</div>
+      </div>
+      <div class="stat-card reveal" data-delay="2">
+        <div class="stat-num" data-count="3" data-suffix="h+">0h+</div>
+        <div class="stat-label">al día en pensamientos repetitivos sobre la apariencia, en promedio.</div>
+        <div class="stat-source">REPORTE CLÍNICO</div>
+      </div>
+      <div class="stat-card reveal" data-delay="3">
+        <div class="stat-num"><em>1</em>/<em>4</em></div>
+        <div class="stat-label">personas con dismorfia muscular reporta consumo de sustancias para alterar su cuerpo.</div>
+        <div class="stat-source">POPE ET AL.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     03 · MANIFESTACIONES
+     ========================================================= -->
+<section class="spread" id="manifestaciones">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow reveal">03 · Cómo se manifiesta</span>
+      <h2 class="display reveal" data-delay="1">Cuatro señales que conviene <em>reconocer.</em></h2>
+    </div>
+
+    <div class="manifest-grid">
+      <article class="manifest-card reveal">
+        <span class="badge">01</span>
+        <div class="manifest-icon"><em>↗</em></div>
+        <h4>Comparación constante</h4>
+        <p>Pasar tiempo significativo comparando la apariencia propia con la de otras personas en redes sociales, el gimnasio, la calle o el espejo.</p>
+      </article>
+      <article class="manifest-card reveal" data-delay="1">
+        <span class="badge">02</span>
+        <div class="manifest-icon"><em>↻</em></div>
+        <h4>Comportamientos repetitivos</h4>
+        <p>Mirarse al espejo de forma compulsiva, camuflar partes del cuerpo con ropa o maquillaje, evitar fotografías o tocarse repetidamente.</p>
+      </article>
+      <article class="manifest-card reveal" data-delay="2">
+        <span class="badge">03</span>
+        <div class="manifest-icon"><em>⊘</em></div>
+        <h4>Evitación social</h4>
+        <p>Faltar a clases, al trabajo o a reuniones porque la propia imagen genera ansiedad intensa o miedo al juicio de los demás.</p>
+      </article>
+      <article class="manifest-card reveal" data-delay="3">
+        <span class="badge">04</span>
+        <div class="manifest-icon"><em>⚠</em></div>
+        <h4>Conductas de riesgo</h4>
+        <p>Dietas restrictivas, ejercicio excesivo, procedimientos estéticos repetidos o uso de sustancias para modificar el cuerpo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     04 · CICLO  — Animated infographic
+     ========================================================= -->
+<section class="spread borgona" id="ciclo">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow reveal">04 · El ciclo del TDC</span>
+      <h2 class="display reveal" data-delay="1">Un bucle que se <em>refuerza solo.</em></h2>
+    </div>
+
+    <div class="cycle-wrap">
+      <div class="cycle-text">
+        <p class="reveal">
+          El TDC funciona como un círculo cerrado: el pensamiento intrusivo dispara una conducta de comprobación o camuflaje que produce alivio momentáneo — y luego nueva ansiedad. Cada vuelta refuerza la creencia inicial.
+        </p>
+        <div class="cycle-steps">
+          <div class="cycle-step reveal" data-step="0">
+            <span class="step-n">01</span>
+            <span class="step-name">Pensamiento intrusivo sobre el defecto</span>
+          </div>
+          <div class="cycle-step reveal" data-step="1" data-delay="1">
+            <span class="step-n">02</span>
+            <span class="step-name">Comparación con otros (redes, gym, calle)</span>
+          </div>
+          <div class="cycle-step reveal" data-step="2" data-delay="2">
+            <span class="step-n">03</span>
+            <span class="step-name">Comportamiento: revisar, camuflar, evitar</span>
+          </div>
+          <div class="cycle-step reveal" data-step="3" data-delay="3">
+            <span class="step-n">04</span>
+            <span class="step-name">Alivio breve · regreso de la ansiedad</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cycle-visual reveal" data-delay="2">
+        <svg class="cycle-svg" viewBox="-150 -150 300 300">
+          <!-- Circular arc connecting nodes -->
+          <circle cx="0" cy="0" r="100" class="arc" />
+          <!-- 4 nodes at top, right, bottom, left -->
+          <g data-node="0" transform="translate(0,-100)">
+            <circle r="38" class="node-circle"></circle>
+            <text class="node-label" y="0" dy="0.35em">Pensamiento</text>
+          </g>
+          <g data-node="1" transform="translate(100,0)">
+            <circle r="38" class="node-circle"></circle>
+            <text class="node-label" y="0" dy="0.35em">Comparación</text>
+          </g>
+          <g data-node="2" transform="translate(0,100)">
+            <circle r="38" class="node-circle"></circle>
+            <text class="node-label" y="0" dy="0.35em">Conducta</text>
+          </g>
+          <g data-node="3" transform="translate(-100,0)">
+            <circle r="38" class="node-circle"></circle>
+            <text class="node-label" y="0" dy="0.35em">Alivio breve</text>
+          </g>
+          <!-- Direction arrows on the arc — 4 chevrons indicating clockwise flow -->
+          <g fill="none" stroke="rgba(212, 84, 122, 0.55)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="-66,-72 -60,-66 -66,-60" />
+            <polyline points="72,-66 66,-60 60,-66" />
+            <polyline points="66,72 60,66 66,60" />
+            <polyline points="-72,66 -66,60 -60,66" />
+          </g>
+        </svg>
+        <div class="cycle-center">
+          <div class="lbl">Ciclo del TDC</div>
+          <div class="title">se repite</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     05 · DISMORFIA MUSCULAR
+     ========================================================= -->
+<section class="spread tarjeta" id="muscular">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow reveal">05 · Subtipo</span>
+      <h2 class="display reveal" data-delay="1">Dismorfia <em>muscular.</em></h2>
+    </div>
+
+    <div class="muscular-wrap">
+      <div class="muscular-text">
+        <p class="reveal">
+          Una manifestación específica del TDC, observada con mayor frecuencia en hombres. Se caracteriza por la <strong>preocupación persistente</strong> por ser "demasiado pequeño" o por tener una musculatura insuficiente — incluso con cuerpos saludables o muy desarrollados.
+        </p>
+        <p class="reveal" data-delay="1">
+          Las personas con dismorfia muscular suelen realizar rutinas de pesas excesivas y seguir dietas estrictas que, en algunos casos, pueden generar daños físicos importantes.
+        </p>
+
+        <div class="muscular-warning reveal" data-delay="2">
+          <h5>El riesgo del dopaje</h5>
+          <p>
+            El uso de esteroides anabólicos u otras sustancias no solo afecta al organismo: crea una <strong>disonancia cognitiva</strong> que afecta la autoestima. Funciona como distractor del malestar, pero los resultados artificiales generan pérdida de conexión con el esfuerzo propio y la autogestión emocional.
+          </p>
+        </div>
+      </div>
+
+      <div class="muscular-visual reveal" data-delay="1">
+        <span class="mv-eyebrow">Indicadores clínicos</span>
+        <h4>¿Cómo se mide?</h4>
+
+        <div class="scale-row">
+          <div class="scale-item">
+            <div class="scale-label"><span>Preocupación por tamaño</span><span>Alto</span></div>
+            <div class="scale-bar"><div class="scale-bar-fill" data-fill="92"></div></div>
+          </div>
+          <div class="scale-item">
+            <div class="scale-label"><span>Tiempo en el gimnasio</span><span>5–6h/día</span></div>
+            <div class="scale-bar"><div class="scale-bar-fill" data-fill="78"></div></div>
+          </div>
+          <div class="scale-item">
+            <div class="scale-label"><span>Restricción alimentaria</span><span>Significativa</span></div>
+            <div class="scale-bar"><div class="scale-bar-fill" data-fill="65"></div></div>
+          </div>
+          <div class="scale-item">
+            <div class="scale-label"><span>Uso de sustancias</span><span>1 de 4 casos</span></div>
+            <div class="scale-bar"><div class="scale-bar-fill" data-fill="25"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     06 · CUÁNDO BUSCAR AYUDA
+     ========================================================= -->
+<section class="spread" id="ayuda">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow reveal">06 · Cuándo buscar acompañamiento</span>
+      <h2 class="display reveal" data-delay="1">Las señales que importan <em>tomar en serio.</em></h2>
+      <p class="lede reveal" data-delay="2" style="margin-top: 16px;">
+        Si reconoces tres o más de estas señales de manera persistente durante al menos un mes, vale la pena consultar con un profesional de salud mental.
+      </p>
+    </div>
+
+    <div class="check-grid">
+      <div class="check-item reveal"><span class="check-mark">✓</span><span>Las preocupaciones ocupan más de 1 hora al día.</span></div>
+      <div class="check-item reveal" data-delay="1"><span class="check-mark">✓</span><span>Sientes ansiedad antes de salir de casa o ser visto.</span></div>
+      <div class="check-item reveal" data-delay="2"><span class="check-mark">✓</span><span>Has dejado de hacer actividades que disfrutabas.</span></div>
+      <div class="check-item reveal" data-delay="3"><span class="check-mark">✓</span><span>Buscas reaseguro constante sobre tu apariencia.</span></div>
+      <div class="check-item reveal"><span class="check-mark">✓</span><span>Realizas comportamientos repetitivos (espejos, fotos, retoques).</span></div>
+      <div class="check-item reveal" data-delay="1"><span class="check-mark">✓</span><span>Las relaciones sociales o laborales se han visto afectadas.</span></div>
+      <div class="check-item reveal" data-delay="2"><span class="check-mark">✓</span><span>Has considerado o realizado procedimientos estéticos.</span></div>
+      <div class="check-item reveal" data-delay="3"><span class="check-mark">✓</span><span>Aparecen pensamientos persistentes de inadecuación.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     CTA FINAL
+     ========================================================= -->
+<section class="cta-final">
+  <div class="container">
+    <h2 class="reveal">¿Quieres saber<br /><em>cómo estás tú?</em></h2>
+    <p class="reveal" data-delay="1">Nuestra autoevaluación gamificada en tres niveles te orientará — anónima, gratuita y diseñada por el equipo clínico.</p>
+    <div class="cta-row reveal" data-delay="2">
+      <a href="game.html" class="btn btn-primary">Hacer la autoevaluación →</a>
+      <a href="Bodymind Balance.html#modulos" class="btn btn-ghost">Ver acompañamiento</a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <span class="brand" style="font-family: var(--display); font-size: 18px;">Bodymind <em style="font-style: italic;">balance</em></span> · Biblioteca · Lectura 01
+    </div>
+    <div class="sources">Fuentes · APA DSM-5 · Phillips 2019 · Pope et al.</div>
+  </div>
+</footer>
+
+<!-- =========================================================
+     Scroll animations + counters
+     ========================================================= -->
+<script>
+(function() {
+  // 1. Scroll-reveal via IntersectionObserver
+  const items = document.querySelectorAll(".reveal");
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add("visible");
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+  items.forEach((el) => io.observe(el));
+
+  // 2. Animated counters
+  function animateCount(el) {
+    const target = parseFloat(el.dataset.count);
+    if (isNaN(target)) return;
+    const suffix = el.dataset.suffix || "";
+    const dur = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = Math.round(target * eased * 10) / 10;
+      el.textContent = (Number.isInteger(target) ? Math.round(target * eased) : v) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        animateCount(e.target);
+        countIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll(".stat-num[data-count]").forEach((el) => countIO.observe(el));
+
+  // 3. Scale bars (dismorfia muscular)
+  const barIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.dataset.fill + "%";
+        barIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0 });
+  document.querySelectorAll(".scale-bar-fill[data-fill]").forEach((el) => barIO.observe(el));
+
+  // 4. Cycle infographic — pulse nodes in sequence whenever visible
+  const cycleVisual = document.querySelector(".cycle-visual");
+  const cycleNodes = document.querySelectorAll(".cycle-svg [data-node]");
+  const cycleSteps = document.querySelectorAll(".cycle-step[data-step]");
+  if (cycleVisual && cycleNodes.length) {
+    let cycleTimer = null;
+    let cycleIdx = 0;
+
+    function step() {
+      cycleNodes.forEach((n, i) => {
+        const circle = n.querySelector(".node-circle");
+        const label = n.querySelector(".node-label");
+        if (i === cycleIdx) {
+          circle.classList.add("active");
+          label.classList.add("active");
+        } else {
+          circle.classList.remove("active");
+          label.classList.remove("active");
+        }
+      });
+      cycleSteps.forEach((s, i) => {
+        s.classList.toggle("active", i === cycleIdx);
+      });
+      cycleIdx = (cycleIdx + 1) % cycleNodes.length;
+    }
+
+    const cycleIO = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !cycleTimer) {
+          step();
+          cycleTimer = setInterval(step, 1600);
+        } else if (!e.isIntersecting && cycleTimer) {
+          clearInterval(cycleTimer);
+          cycleTimer = null;
+        }
+      });
+    }, { threshold: 0.2 });
+    cycleIO.observe(cycleVisual);
+  }
+})();
+</script>
+
+</body>
+</html>

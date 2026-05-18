@@ -1,0 +1,695 @@
+/* =========================================================
+   APRENDE — Trastorno Dismórfico Corporal
+   Editorial deep-dive with scroll animations
+   ========================================================= */
+
+:root {
+  --borgona: #7B1A34;
+  --borgona-oscuro: #5C1226;
+  --borgona-claro: #A63050;
+  --rosa: #D4547A;
+  --crema: #F2EDE8;
+  --crema-tarjeta: #E5DDD5;
+  --gris-calido: #C8C0B8;
+  --gris-medio: #9E9891;
+  --texto: #2C2420;
+  --texto-secundario: #6B645E;
+
+  --display: "Instrument Serif", "Cormorant Garamond", Georgia, serif;
+  --sans: "Outfit", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --container: 1180px;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+html, body {
+  background: var(--crema);
+  color: var(--texto);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+.container { max-width: var(--container); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
+
+/* =========================================================
+   Nav
+   ========================================================= */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px) saturate(140%);
+  background: rgba(242, 237, 232, 0.78);
+  border-bottom: 1px solid rgba(123, 26, 52, 0.08);
+}
+.nav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 14px var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--display);
+  font-size: 22px;
+  color: var(--borgona);
+  white-space: nowrap;
+}
+.brand img { width: 42px; height: 42px; object-fit: contain; }
+.nav-breadcrumb {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+}
+.nav-breadcrumb span { color: var(--borgona); }
+.nav-back {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--borgona);
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(123, 26, 52, 0.25);
+  transition: background 0.2s;
+}
+.nav-back:hover { background: rgba(123, 26, 52, 0.06); }
+
+/* =========================================================
+   Typography
+   ========================================================= */
+.display { font-family: var(--display); font-weight: 400; letter-spacing: -0.01em; line-height: 0.95; }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--borgona);
+  font-weight: 500;
+  display: inline-block;
+}
+.lede { font-size: clamp(17px, 1.4vw, 19px); color: var(--texto-secundario); max-width: 60ch; }
+
+/* =========================================================
+   Scroll-reveal animation primitives
+   ========================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal[data-delay="1"] { transition-delay: 0.08s; }
+.reveal[data-delay="2"] { transition-delay: 0.16s; }
+.reveal[data-delay="3"] { transition-delay: 0.24s; }
+.reveal[data-delay="4"] { transition-delay: 0.32s; }
+.reveal[data-delay="5"] { transition-delay: 0.40s; }
+.reveal[data-delay="6"] { transition-delay: 0.48s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  padding: 80px 0 100px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(64px, 9vw, 144px);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  color: var(--texto);
+}
+.hero h1 em { font-style: italic; color: var(--borgona); }
+.hero p.lede { margin-top: 32px; }
+
+.hero-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 40px;
+  border-top: 1px solid rgba(123, 26, 52, 0.15);
+}
+.hero-toc a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 4px;
+  border-bottom: 1px solid rgba(123, 26, 52, 0.10);
+  font-size: 14px;
+  color: var(--texto-secundario);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.hero-toc a:hover {
+  color: var(--borgona);
+  padding-left: 12px;
+}
+.hero-toc a .num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--borgona);
+  margin-right: 20px;
+}
+.hero-toc a .arrow { color: rgba(123, 26, 52, 0.4); transition: transform 0.2s; }
+.hero-toc a:hover .arrow { transform: translateX(4px); color: var(--borgona); }
+
+/* Hero visual — animated brain/body composition */
+.hero-visual {
+  position: relative;
+  aspect-ratio: 1 / 1.1;
+  display: grid;
+  place-items: center;
+}
+.hero-disc {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(212, 84, 122, 0.16), transparent 65%),
+    var(--crema-tarjeta);
+  border-radius: 50%;
+  animation: breathe 6s ease-in-out infinite;
+}
+.hero-disc::before, .hero-disc::after {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border: 1px dashed rgba(123, 26, 52, 0.18);
+  border-radius: 50%;
+}
+.hero-disc::after {
+  inset: 16%;
+  border-color: rgba(212, 84, 122, 0.25);
+  animation: spin 30s linear infinite;
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.hero-visual img {
+  position: relative;
+  width: 78%;
+  filter: drop-shadow(0 24px 50px rgba(92, 18, 38, 0.30));
+}
+
+/* =========================================================
+   Section base
+   ========================================================= */
+section.spread {
+  padding: clamp(100px, 14vh, 160px) 0;
+  position: relative;
+}
+section.dark {
+  background: var(--texto);
+  color: var(--crema);
+}
+section.dark .eyebrow { color: var(--rosa); }
+section.borgona {
+  background: var(--borgona-oscuro);
+  color: var(--crema);
+}
+section.borgona .eyebrow { color: var(--rosa); }
+section.tarjeta {
+  background: var(--crema-tarjeta);
+}
+
+.section-header { margin-bottom: 56px; max-width: 800px; }
+.section-header .display { font-size: clamp(40px, 5.5vw, 72px); margin-top: 12px; }
+.section-header .display em { font-style: italic; color: var(--borgona); }
+section.dark .section-header .display em,
+section.borgona .section-header .display em { color: var(--rosa); }
+
+/* =========================================================
+   01 · Definición  — Editorial text with marker
+   ========================================================= */
+.definicion-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.definicion-lead {
+  font-family: var(--display);
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.05;
+  color: var(--texto);
+}
+.definicion-lead em { font-style: italic; color: var(--borgona); }
+.definicion-lead .marker {
+  background: linear-gradient(180deg, transparent 60%, rgba(212, 84, 122, 0.30) 60%);
+  padding: 0 4px;
+}
+.definicion-detail { display: flex; flex-direction: column; gap: 20px; color: var(--texto-secundario); font-size: 16px; }
+.definicion-detail strong { color: var(--texto); font-weight: 500; }
+.definicion-detail .cite { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--borgona); }
+
+/* Mirror visual — reality vs perception */
+.mirror-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 80px;
+}
+.mirror-card {
+  background: var(--crema);
+  border-radius: 24px;
+  padding: 36px 32px;
+  border: 1px solid rgba(123, 26, 52, 0.10);
+  position: relative;
+  overflow: hidden;
+}
+.mirror-card .mirror-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--borgona);
+  margin-bottom: 24px;
+}
+.mirror-figure {
+  height: 240px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+.mirror-svg {
+  width: 110px; height: 200px;
+  color: var(--borgona);
+}
+.mirror-card.distorted .mirror-svg {
+  filter: url(#wobble);
+  animation: wobble 4s ease-in-out infinite;
+}
+.mirror-card.distorted .mirror-figure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(180deg, transparent 0, transparent 22px, rgba(123, 26, 52, 0.04) 22px, rgba(123, 26, 52, 0.04) 23px);
+  border-radius: 12px;
+}
+@keyframes wobble {
+  0%, 100% { transform: scale(1) skewX(0deg); }
+  25% { transform: scale(1.05, 0.95) skewX(-1deg); }
+  50% { transform: scale(0.92, 1.08) skewX(0deg); }
+  75% { transform: scale(1.04, 0.96) skewX(1deg); }
+}
+.mirror-card h4 {
+  font-family: var(--display);
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.mirror-card p { font-size: 14px; color: var(--texto-secundario); }
+
+/* =========================================================
+   02 · Cifras  — Animated stats
+   ========================================================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.stat-card {
+  padding: 36px 28px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  display: flex; flex-direction: column; gap: 12px;
+  min-height: 220px;
+}
+.stat-num {
+  font-family: var(--display);
+  font-size: clamp(56px, 6vw, 88px);
+  line-height: 0.95;
+  color: var(--crema);
+  letter-spacing: -0.02em;
+}
+.stat-num em { font-style: normal; color: var(--rosa); font-family: inherit; }
+.stat-label {
+  font-size: 14px;
+  color: rgba(242, 237, 232, 0.7);
+  margin-top: auto;
+  line-height: 1.5;
+}
+.stat-source {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(242, 237, 232, 0.4);
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   03 · Manifestaciones — Card grid with stagger animation
+   ========================================================= */
+.manifest-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.manifest-card {
+  padding: 40px 36px;
+  background: var(--crema);
+  border-radius: 22px;
+  border: 1px solid rgba(123, 26, 52, 0.10);
+  display: flex; flex-direction: column; gap: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.manifest-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 50px -30px rgba(92, 18, 38, 0.20);
+}
+.manifest-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: rgba(123, 26, 52, 0.08);
+  display: grid; place-items: center;
+  color: var(--borgona);
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 28px;
+}
+.manifest-card h4 {
+  font-family: var(--display);
+  font-size: 32px;
+  line-height: 1.05;
+  color: var(--texto);
+}
+.manifest-card p { color: var(--texto-secundario); font-size: 15px; }
+.manifest-card .badge {
+  position: absolute;
+  top: 24px; right: 24px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(123, 26, 52, 0.5);
+}
+
+/* =========================================================
+   04 · Ciclo — Animated infographic
+   ========================================================= */
+.cycle-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.cycle-text h2 { font-family: var(--display); font-size: clamp(36px, 4.5vw, 56px); line-height: 0.95; margin-bottom: 24px; }
+.cycle-text h2 em { font-style: italic; color: var(--rosa); }
+.cycle-text p { color: rgba(242, 237, 232, 0.7); font-size: 16px; margin-bottom: 24px; }
+.cycle-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cycle-step {
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  display: flex; align-items: center; gap: 14px;
+  transition: all 0.4s ease;
+}
+.cycle-step .step-n {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(212, 84, 122, 0.15);
+  color: var(--rosa);
+  display: grid; place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.cycle-step .step-name { font-size: 15px; }
+.cycle-step.active {
+  background: rgba(212, 84, 122, 0.10);
+  border-color: rgba(212, 84, 122, 0.30);
+}
+.cycle-step.active .step-n {
+  background: var(--rosa);
+  color: var(--texto);
+}
+
+.cycle-visual {
+  aspect-ratio: 1;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.cycle-svg {
+  width: 100%;
+  height: 100%;
+}
+.cycle-svg .node-circle {
+  fill: rgba(212, 84, 122, 0.10);
+  stroke: rgba(212, 84, 122, 0.3);
+  stroke-width: 1.5;
+  transition: all 0.4s ease;
+}
+.cycle-svg .node-circle.active {
+  fill: var(--rosa);
+  stroke: var(--rosa);
+}
+.cycle-svg .node-label {
+  fill: rgba(242, 237, 232, 0.85);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  text-anchor: middle;
+}
+.cycle-svg .node-label.active { fill: var(--crema); }
+.cycle-svg .arc {
+  fill: none;
+  stroke: rgba(212, 84, 122, 0.25);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 6;
+}
+.cycle-center {
+  position: absolute;
+  text-align: center;
+  pointer-events: none;
+}
+.cycle-center .lbl {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 232, 0.5);
+}
+.cycle-center .title {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 28px;
+  color: var(--rosa);
+}
+
+/* =========================================================
+   05 · Dismorfia muscular
+   ========================================================= */
+.muscular-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+.muscular-text { display: flex; flex-direction: column; gap: 20px; }
+.muscular-text p { font-size: 16px; color: var(--texto-secundario); }
+.muscular-text p strong { color: var(--texto); }
+.muscular-warning {
+  margin-top: 24px;
+  padding: 24px 28px;
+  background: rgba(123, 26, 52, 0.06);
+  border-left: 3px solid var(--borgona);
+  border-radius: 8px;
+}
+.muscular-warning h5 {
+  font-family: var(--display);
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: var(--borgona);
+}
+.muscular-warning p { font-size: 14px; }
+
+.muscular-visual {
+  aspect-ratio: 4/5;
+  background: var(--crema);
+  border-radius: 22px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(123, 26, 52, 0.10);
+}
+.muscular-visual .mv-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--borgona);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.muscular-visual h4 {
+  font-family: var(--display);
+  font-size: 32px;
+  line-height: 1;
+  margin-bottom: auto;
+}
+.scale-row {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.scale-item { display: flex; flex-direction: column; gap: 6px; }
+.scale-label {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+}
+.scale-bar {
+  height: 6px;
+  background: var(--crema-tarjeta);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.scale-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--borgona), var(--rosa));
+  border-radius: 999px;
+  width: 0;
+  transition: width 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.visible .scale-bar-fill { /* triggered when section reveal hits */ }
+
+/* =========================================================
+   06 · Cuándo buscar ayuda — Checklist
+   ========================================================= */
+.check-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.check-item {
+  padding: 22px 24px;
+  background: var(--crema);
+  border-radius: 14px;
+  border: 1px solid rgba(123, 26, 52, 0.10);
+  display: flex; align-items: flex-start; gap: 14px;
+  font-size: 15px;
+  color: var(--texto);
+}
+.check-item .check-mark {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--borgona);
+  color: var(--crema);
+  display: grid; place-items: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* =========================================================
+   CTA Final
+   ========================================================= */
+.cta-final {
+  padding: 120px 0;
+  text-align: center;
+}
+.cta-final h2 {
+  font-family: var(--display);
+  font-size: clamp(44px, 6vw, 80px);
+  line-height: 0.95;
+  margin-bottom: 24px;
+  max-width: 18ch;
+  margin-left: auto; margin-right: auto;
+}
+.cta-final h2 em { font-style: italic; color: var(--borgona); }
+.cta-final p { color: var(--texto-secundario); margin-bottom: 36px; max-width: 50ch; margin-left: auto; margin-right: auto; }
+.cta-row {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn-primary { background: var(--borgona); color: var(--crema); }
+.btn-primary:hover { background: var(--borgona-oscuro); transform: translateY(-1px); }
+.btn-ghost { color: var(--borgona); border: 1px solid rgba(123, 26, 52, 0.25); }
+.btn-ghost:hover { background: rgba(123, 26, 52, 0.06); border-color: var(--borgona); }
+
+/* =========================================================
+   Footer
+   ========================================================= */
+.footer {
+  background: var(--texto);
+  color: rgba(242, 237, 232, 0.6);
+  padding: 60px 0 30px;
+  font-size: 13px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer .brand { color: var(--crema); }
+.footer .sources { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 1024px) {
+  .hero-grid, .definicion-body, .mirror-row, .cycle-wrap, .muscular-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .manifest-grid, .check-grid { grid-template-columns: 1fr; }
+  .hero { padding-top: 40px; }
+}
+@media (max-width: 720px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .nav-breadcrumb { display: none; }
+}
