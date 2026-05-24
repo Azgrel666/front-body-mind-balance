@@ -719,6 +719,24 @@ function End({ answers, onRestart }) {
     };
   });
 
+  // Plan recommendation based on tier
+  const planInfo = {
+    y: {
+      name: "Plan Mensual",
+      description: "Acompañamiento personalizado durante un mes con sesiones semanales y seguimiento continuo.",
+      price: "250.000",
+      period: "mes",
+    },
+    r: {
+      name: "Plan Semestral",
+      description: "Programa intensivo de 6 meses con acompañamiento integral para una transformación profunda.",
+      price: "1.450.000",
+      period: "semestre",
+    },
+  };
+
+  const currentPlan = planInfo[tier.key];
+
   return (
     <>
       <div className="screen-body" style={{ justifyContent: "flex-start", paddingTop: 8 }}>
@@ -757,11 +775,66 @@ function End({ answers, onRestart }) {
             );
           })}
         </div>
+
+        {/* Premium Plan Recommendation for Yellow and Red tiers */}
+        {currentPlan && (
+          <div className="premium-plan-card" style={{
+            marginTop: 24,
+            padding: 20,
+            background: "rgba(242,237,232,0.08)",
+            borderRadius: 16,
+            border: `1px solid ${tier.color}40`,
+            width: "100%",
+          }}>
+            <div style={{
+              fontSize: 11,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: tier.color,
+              marginBottom: 8,
+              fontFamily: "var(--mono)"
+            }}>
+              Recomendado para ti
+            </div>
+            <h3 style={{
+              fontFamily: "var(--display)",
+              fontSize: 24,
+              margin: "0 0 8px 0",
+              color: "#F2EDE8"
+            }}>
+              {currentPlan.name}
+            </h3>
+            <p style={{
+              fontSize: 14,
+              color: "rgba(242,237,232,0.7)",
+              margin: "0 0 16px 0",
+              lineHeight: 1.5
+            }}>
+              {currentPlan.description}
+            </p>
+
+            <div style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: 4,
+            }}>
+              <span style={{ fontSize: 14, color: "rgba(242,237,232,0.6)" }}>$</span>
+              <span style={{
+                fontSize: 32,
+                fontWeight: 600,
+                color: "#F2EDE8",
+                fontFamily: "var(--display)"
+              }}>
+                {currentPlan.price}
+              </span>
+              <span style={{ fontSize: 14, color: "rgba(242,237,232,0.6)" }}>
+                COP / {currentPlan.period}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
       <div className="screen-cta" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <a href="/#modulos" className="btn btn-primary">
-          {tier.key === "r" ? "Conocer plan Premium →" : "Explorar planes →"}
-        </a>
         <button className="btn btn-ghost" onClick={onRestart}>Repetir la autoevaluación</button>
       </div>
     </>

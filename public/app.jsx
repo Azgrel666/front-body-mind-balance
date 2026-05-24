@@ -25,7 +25,7 @@ function Modules() {
   const PREMIUM = [
     {
       tag: "EVALUACIÓN CLÍNICA",
-      title: "EDI-3 · STAI · BDQ",
+      title: "EDI-3 · STAI · BSQ",
       desc: "Pruebas estandarizadas aplicadas y analizadas por psicólogos para obtener un perfil integral de tu relación con el cuerpo.",
       bullets: ["Informe detallado", "Sesión de devolución", "Confidencial"],
     },
@@ -33,14 +33,19 @@ function Modules() {
       tag: "TERAPIA INDIVIDUAL",
       title: "Psicólogo · Nutricionista",
       desc: "Sesiones uno-a-uno con profesionales especializados en imagen corporal y deporte. Modalidad virtual o presencial.",
-      bullets: ["4 sesiones/mes", "Equipo certificado", "Plan a 12 semanas"],
+      bullets: ["4 sesiones/mes", "Equipo certificado"],
     },
     {
       tag: "PLAN PERSONALIZADO",
       title: "Entrenamiento · Nutrición",
       desc: "Un plan que prioriza tu bienestar, no la estética. Diseñado por entrenadores y nutricionistas con visión psicológica.",
-      bullets: ["Ajuste semanal", "App de seguimiento", "Sin dietas restrictivas"],
+      bullets: ["Ajuste semanal", "Sin dietas restrictivas"],
     },
+  ];
+
+  const PLANS = [
+    { name: "Plan Mensual", price: "250.000", period: "mes" },
+    { name: "Plan Semestral", price: "1.450.000", period: "semestre" },
   ];
 
   const items = plan === "free" ? FREE : PREMIUM;
@@ -56,6 +61,21 @@ function Modules() {
         </button>
       </div>
 
+      {plan === "premium" && (
+        <div className="plans-pricing">
+          {PLANS.map((p, i) => (
+            <div key={i} className="plan-price-card">
+              <span className="plan-name">{p.name}</span>
+              <div className="plan-price">
+                <span className="price-symbol">$</span>
+                <span className="price-amount">{p.price}</span>
+                <span className="price-period">COP / {p.period}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className={`modulos-grid ${plan === "free" ? "two-cols" : ""}`}>
         {items.map((m, i) => (
           <div key={i} className={`module-card ${plan === "premium" ? "premium" : ""}`}>
@@ -63,9 +83,11 @@ function Modules() {
             <span className={`module-tag ${plan === "free" ? "free" : "prem"}`}>{m.tag}</span>
             <h4>{m.title}</h4>
             <p>{m.desc}</p>
-            <ul>
-              {m.bullets.map((b, j) => <li key={j}>{b}</li>)}
-            </ul>
+            {m.bullets.length > 0 && (
+              <ul>
+                {m.bullets.map((b, j) => <li key={j}>{b}</li>)}
+              </ul>
+            )}
           </div>
         ))}
       </div>

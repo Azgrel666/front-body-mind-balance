@@ -834,6 +834,55 @@ section { padding: clamp(80px, 12vh, 140px) 0; position: relative; }
   font-weight: 300;
 }
 
+.plans-pricing {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.plan-price-card {
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(212, 84, 122, 0.12), rgba(123, 26, 52, 0.05));
+  border: 1px solid rgba(212, 84, 122, 0.25);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+.plan-price-card .plan-name {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--rosa);
+  margin-bottom: 8px;
+  font-family: var(--mono);
+}
+.plan-price-card .plan-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+.plan-price-card .price-symbol {
+  font-size: 14px;
+  color: rgba(242, 237, 232, 0.6);
+}
+.plan-price-card .price-amount {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--crema);
+  font-family: var(--display);
+}
+.plan-price-card .price-period {
+  font-size: 13px;
+  color: rgba(242, 237, 232, 0.6);
+}
+@media (max-width: 600px) {
+  .plans-pricing { grid-template-columns: 1fr; }
+  .plan-price-card{
+    padding: 12px;
+  }
+}
+
 /* Pricing strip */
 .pricing-strip {
   margin-top: 64px;
