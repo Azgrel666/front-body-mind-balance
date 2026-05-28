@@ -840,10 +840,39 @@ section { padding: clamp(80px, 12vh, 140px) 0; position: relative; }
   gap: 16px;
   margin-bottom: 24px;
 }
+
+/* Grouped plans by tier */
+.plans-pricing-grouped {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.plan-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.plan-group-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: var(--mono);
+  font-weight: 600;
+}
+.plan-group-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (max-width: 600px) {
+  .plans-pricing-grouped { grid-template-columns: 1fr; }
+}
+
 .plan-price-card {
   padding: 20px 24px;
-  background: linear-gradient(135deg, rgba(212, 84, 122, 0.12), rgba(123, 26, 52, 0.05));
-  border: 1px solid rgba(212, 84, 122, 0.25);
+  background: linear-gradient(135deg, rgba(242, 237, 232, 0.06), rgba(242, 237, 232, 0.02));
+  border: 1px solid rgba(242, 237, 232, 0.15);
   border-radius: var(--radius-lg);
   text-align: center;
 }
@@ -852,7 +881,7 @@ section { padding: clamp(80px, 12vh, 140px) 0; position: relative; }
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--rosa);
+  color: rgba(242, 237, 232, 0.7);
   margin-bottom: 8px;
   font-family: var(--mono);
 }

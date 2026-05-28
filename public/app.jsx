@@ -43,10 +43,23 @@ function Modules() {
     },
   ];
 
-  const PLANS = [
-    { name: "Plan Mensual", price: "250.000", period: "mes" },
-    { name: "Plan Semestral", price: "1.450.000", period: "semestre" },
-  ];
+  const PLANS = {
+    amarillo: {
+      label: "Amarillo · Sintomas de alerta",
+      color: "#E0B458",
+      plans: [
+        { name: "Plan Mensual", price: "300.000", period: "mes" },
+      ],
+    },
+    rojo: {
+      label: "Rojo · Alta sospecha de TDC",
+      color: "#D4547A",
+      plans: [
+        { name: "Plan Mensual", price: "400.000", period: "mes" },
+        { name: "Plan Semestral", price: "1.450.000", period: "semestre" },
+      ],
+    },
+  };
 
   const items = plan === "free" ? FREE : PREMIUM;
 
@@ -62,14 +75,23 @@ function Modules() {
       </div>
 
       {plan === "premium" && (
-        <div className="plans-pricing">
-          {PLANS.map((p, i) => (
-            <div key={i} className="plan-price-card">
-              <span className="plan-name">{p.name}</span>
-              <div className="plan-price">
-                <span className="price-symbol">$</span>
-                <span className="price-amount">{p.price}</span>
-                <span className="price-period">COP / {p.period}</span>
+        <div className="plans-pricing-grouped">
+          {Object.entries(PLANS).map(([key, group]) => (
+            <div key={key} className="plan-group">
+              <div className="plan-group-label" style={{ color: group.color }}>
+                {group.label}
+              </div>
+              <div className="plan-group-cards">
+                {group.plans.map((p, i) => (
+                  <div key={i} className="plan-price-card">
+                    <span className="plan-name">{p.name}</span>
+                    <div className="plan-price">
+                      <span className="price-symbol">$</span>
+                      <span className="price-amount">{p.price}</span>
+                      <span className="price-period">COP / {p.period}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))}
